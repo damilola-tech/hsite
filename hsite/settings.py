@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import dj_database_url
 import django_heroku
 from decouple import config
 
@@ -80,10 +81,14 @@ WSGI_APPLICATION = 'hsite.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    # 'default': {
+    #     'ENGINE': config('DB_ENGINE'),
+    #     'NAME': config('DB_NAME'),
+    #     'USER':config('DB_USER'),
+    #     'PASSWORD':config('DB_PASSWORD'),
+    #     'HOST':config('DB_HOST'),
+    #     'PORT':config('DB_PORT', cast=int)
+    # }
 }
 
 
@@ -133,5 +138,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+DATABASES = {
+    'default': dj_database_url.parse(config("DATABASE_URL"))
+}
 django_heroku.settings(locals())
+
+
 
